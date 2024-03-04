@@ -15,3 +15,6 @@ How to join a worker node
 kubectl get nodes
 kubectl get pod -A
 ###this will show you the worker node as read
+###find out where is the api server running
+kubectl get pod -o wide -A
+kubectl get nodes
