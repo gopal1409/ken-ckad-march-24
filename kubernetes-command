@@ -8,3 +8,9 @@
    11  crictl ps
    12  crictl images
 #########################################################
+How to join a worker node
+21  kubeadm token create --print-join-command
+#####the above command will give you an output with sha value copy the whole command and paster it in worker node
+####then come back to master node wait for few min before master get intialzied
+kubectl get nodes
+###this will show you the worker node as read
