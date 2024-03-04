@@ -13,3 +13,13 @@
    90  kubectl get pod
    91  kubectl delete pod nginx-deployment-86dcfdf4c6-h5wnw
    92  kubectl get pod
+###imperative way to create an deployment
+##this will show you the output in yaml format
+   97  kubectl create deploy fancyapp --image=nginx --port=80 --dry-run=client -o yaml
+###this will shwo you the output and store in a file
+   98  kubectl create deploy fancyapp --image=nginx --port=80 --dry-run=client -o yaml > dep.yml
+   99  kubectl apply -f dep.yml
+102  kubectl get rs
+  100  kubectl get deploy
+  101  kubectl get pod
+  
