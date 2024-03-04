@@ -49,3 +49,8 @@ kubectl get pod > /tmp/pod.sh
    72  kubectl edit pos redis123
    73  kubectl edit pod redis123
 
+###delete teh pod it will never come back
+  76  kubectl get pod
+   77  kubectl delete pod redis1
+   78  kubectl delete pod redis123
+   79  kubectl get pod
