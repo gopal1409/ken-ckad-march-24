@@ -42,4 +42,26 @@ error: unable to find container named "nginx1"
 #################################################describe both the replicaset which will show you the version of image
   118  kubectl describe rs nginx-deployment-86dcfdf4c6
   119  kubectl describe rs nginx-deployment-848dd6cfb5
+###rollback to previous deployment
+##we do a mistake in the image deployment
+ 125  kubectl set image deploy nginx-deployment nginx=nginx:1.161 --record
+###rollout status we can see the status 
+  126  kubectl rollout status deploy nginx-deployment
+###get rs will show you the new and old rollout
+  127  kubectl get rs
+###get pod will show that a new pod is stuck up due to image issue
+  128  kubectl get pod
+
+  129  kubectl describe pod nginx-deployment-79c8677895-75pv7
+
+  130  kubectl describe deploy nginx-deployment
+#####if you want to see all the rollout history
+  131  kubectl rollout history deploy nginx-deployment
+  132  kubectl rollout history deploy nginx-deployment --revision=1
+##this undo will rollout from one version to another and vice versa
+  133  kubectl rollout undo deploy nginx-deployment
+  134  kubectl get rs
+###to move to a specific relase privde the revison number
+  135  kubectl rollout undo deploy nginx-deployment --to-revision=1
+  136  kubectl rollout undo deploy nginx-deployment --to-revision=2
 
