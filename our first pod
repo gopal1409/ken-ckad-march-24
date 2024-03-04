@@ -1,0 +1,12 @@
+ 36  cd /root
+
+   37  git clone https://github.com/gopal1409/ken-feb-manifest-24
+   38  cd ken-feb-manifest-24/
+
+   39  git pull
+####kubectl apply command will help you to apply your manifest file
+   40  kubectl apply -f pod.yml
+####get will give you what are the pod running
+   41  kubectl get pod
+##describe will give you the event log about the pod
+   42  kubectl describe pod nginx
