@@ -12,6 +12,10 @@
    42  kubectl describe pod nginx
 ####exam create a pod with the image httpd 
 https://kubernetes.io/docs/concepts/workloads/pods/
+###to create teh pod 
+vi pod2.yaml
+#####get the defination from the kubernetes documentation
+##change the name of the pod change the name of the contianer
 ####check how many pods are running in default namespace
 kubectl get pod
 ###save the output inside an file
