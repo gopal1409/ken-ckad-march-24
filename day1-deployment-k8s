@@ -23,3 +23,10 @@
   100  kubectl get deploy
   101  kubectl get pod
   
+######labels describe
+ 105  kubectl get deploy
+  106  kubectl describe deploy nginx-deployment
+  107  kubectl get rs
+  108  kubectl describe rs nginx-deployment-86dcfdf4c6
+  109  kubectl get pods
+  110  kubectl describe pod nginx-deployment-86dcfdf4c6-lk22w
