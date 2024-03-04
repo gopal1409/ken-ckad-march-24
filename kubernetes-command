@@ -1,0 +1,10 @@
+###to verify that your master machine setup has been completed. 
+##or to interact with your kubernetes cluster
+9  kubectl get nodes
+#######################
+###to verify the master component which is running as pod 
+   10  kubectl get pod -A
+###to verify that this pod are running as container
+   11  crictl ps
+   12  crictl images
+#########################################################
