@@ -22,3 +22,17 @@ kubectl get pod
 touch /tmp/pod.sh
 ###to save the output 
 kubectl get pod > /tmp/pod.sh
+###create a pod with redis image and the pod will run on a 6379
+###edit the pod run on 6380 or change the image to a different version. 
+##this will create a pod and apply i
+ 47  kubectl run redis --image=redis --port 5679
+   48  kubectl get pod
+###this will give you an skeleton of your pod 
+   49  kubectl run redis1 --image=redis --port 5679 --dry-run=client -o yaml
+##you can save the skeleton on a file
+   50  kubectl run redis1 --image=redis --port 5679 --dry-run=client -o yaml > redis1.yml
+   51  cat redis1.yml
+###late on you can apply it
+   52  kubectl apply -f redis1.yml
+   53  kubectl get pod
+
