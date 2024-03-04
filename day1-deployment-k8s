@@ -30,3 +30,16 @@
   108  kubectl describe rs nginx-deployment-86dcfdf4c6
   109  kubectl get pods
   110  kubectl describe pod nginx-deployment-86dcfdf4c6-lk22w
+####updating the deployment
+##3you need to always check the name of the image
+ kubectl set image deploy nginx-deployment nginx1=nginx:1.16.1
+error: unable to find container named "nginx1"
+#############the contianer name you have define earlier should match
+ kubectl set image deploy nginx-deployment nginx=nginx:1.16.1
+######check the replicaset the older replicaset will be zero
+116  kubectl set image deploy nginx-deployment nginx=nginx:1.16.1
+  117  kubectl get rs
+#################################################describe both the replicaset which will show you the version of image
+  118  kubectl describe rs nginx-deployment-86dcfdf4c6
+  119  kubectl describe rs nginx-deployment-848dd6cfb5
+
