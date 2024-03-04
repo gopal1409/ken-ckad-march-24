@@ -19,6 +19,6 @@ vi pod2.yaml
 ####check how many pods are running in default namespace
 kubectl get pod
 ###save the output inside an file
-touch /temp/pod.sh
+touch /tmp/pod.sh
 ###to save the output 
-kubectl get pod > /temp/pod.sh
+kubectl get pod > /tmp/pod.sh
