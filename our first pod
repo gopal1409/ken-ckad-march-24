@@ -35,4 +35,12 @@ kubectl get pod > /tmp/pod.sh
 ###late on you can apply it
    52  kubectl apply -f redis1.yml
    53  kubectl get pod
+###already there is an redis123 pod is running you need to change the container name to redis
+61  kubectl run redis123 --image=redis --port 5679
+   62  kubectl get pod
+   63  kubectl describe pod redis123
+###edit command will open the running configuration in yaml file. try to modify the container name and try to save it will not work
+   64  kubectl edit pod redis123
+   65  cat /tmp/kubectl-edit-2642773079.yaml
+
 
