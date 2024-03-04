@@ -43,4 +43,9 @@ kubectl get pod > /tmp/pod.sh
    64  kubectl edit pod redis123
    65  cat /tmp/kubectl-edit-2642773079.yaml
 
+######kubectl replace command will replace the previous pod with the new defination
+ 71  kubectl replace -f /tmp/kubectl-edit-2642773079.yaml 
+71  kubectl replace -f /tmp/kubectl-edit-2642773079.yaml --force
+   72  kubectl edit pos redis123
+   73  kubectl edit pod redis123
 
