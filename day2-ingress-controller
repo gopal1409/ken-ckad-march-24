@@ -7,4 +7,12 @@
   630  kubectl get svc -A
 ####delete the validation web hook as we dont have the ssl certificate we have it but unsigned
        665  kubectl delete -A ValidatingWebhookConfiguration ingress-nginx-admission
+####lets create two container and service against them
+ 257  kubectl run cart --image=nginx
+  258  kubectl run payment --image=httpd
+  259  kubectl expose pod cart --port=80 --name=cartservice
+  260  kubectl expose pod payment --port=80 --name=paymentservice
+###@#if i look into the service both the service are running as cluster ip
+  261  kubectl get svc
+
     
