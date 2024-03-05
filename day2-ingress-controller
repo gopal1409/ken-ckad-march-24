@@ -14,5 +14,22 @@
   260  kubectl expose pod payment --port=80 --name=paymentservice
 ###@#if i look into the service both the service are running as cluster ip
   261  kubectl get svc
-
-    
+###lets create our ingress resource which will point to our services
+##to do the same you need to go to kubernetes.io documentation
+###search for ingress
+##copy the example 
+##changes 
+kubectl get ingressclass
+###modify the ingress class name
+modify the path
+####for cart you can put cart
+##for payment put payment
+###service name point to cartservice 
+##service point to pamentservice
+kubectl get svc
+###############################
+kubectl apply -f ingress.yml
+#####to verify the ingress is connected to your pod or service
+kubectl get ingress 
+kubectl describe ingress 
+########################
