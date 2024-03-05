@@ -44,3 +44,4 @@ status: {}
   157  kubectl get hpa
   158  kubectl edit hpa nginx-cpu
 
+###hpa with memory and network utlization
