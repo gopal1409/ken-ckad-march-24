@@ -1,0 +1,19 @@
+###first lets create teh quota
+   291  vi quota.yml
+  ##############################
+apiVersion: v1
+kind: ResourceQuota
+metadata:
+  name: mem-cpu-demo
+  namespace: dev
+spec:
+  hard:
+    requests.cpu: "1" ###the total request for all pods in that namespace will not exceed more than one gb
+    requests.memory: 1Gi
+    limits.cpu: "2" #limit total for all the pods in that namespace not exceed 2GB
+    limits.memory: 2Gi
+##############################################
+  292  kubectl apply -f quota.yml
+  293  kubectl get resourcequota
+  294  kubectl get resourcequota -n dev
+  295  kubectl describe ns dev
