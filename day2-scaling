@@ -4,3 +4,43 @@
   142  kubectl get deploy
   ####edit deploy will show you the replicas has changed to 5
   143  kubectl edit deploy nginx-deployment
+#####lets do autoscaling
+151  kubectl create deploy nginx-cpu --image=nginx --port=80 --dry-run=client -o yaml
+  152  kubectl create deploy nginx-cpu --image=nginx --port=80 --dry-run=client -o yaml > nginx-cpu.yml
+  153  vi nginx-cpu.yml
+#####you must specific the request for CPU to autoscale based on cpu utilziation in deployment file
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: nginx-cpu
+  name: nginx-cpu
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-cpu
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: nginx-cpu
+    spec:
+      containers:
+      - image: nginx
+        name: nginx
+        ports:
+        - containerPort: 80
+        resources: ###remove the curly 
+          requests: ##add this line
+            cpu: "250m" ##add this line
+status: {}
+
+  154  kubectl apply -f nginx-cpu.yml
+  155  kubectl get deploy
+  156  kubectl autoscale deploy nginx-cpu --cpu-percent=50 --min=5 --max=10
+  157  kubectl get hpa
+  158  kubectl edit hpa nginx-cpu
+
