@@ -1,0 +1,6 @@
+###lets do the manual scaling
+
+  141  kubectl scale deployment nginx-deployment --replicas=5
+  142  kubectl get deploy
+  ####edit deploy will show you the replicas has changed to 5
+  143  kubectl edit deploy nginx-deployment
