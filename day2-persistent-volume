@@ -2,3 +2,27 @@
   mkdir /mnt/data
   echo "this is comeing from my storage service" > /mnt/data/index.html
   cat /mnt/data/index.html
+###lets map this storage with your k8s cluster as resource
+vi pv.yml
+##########################################
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: task-pv-volume
+spec:
+  capacity:
+    storage: 10Gi
+  volumeMode: Filesystem
+  accessModes:
+    - ReadWriteOnce #read #readwritemany
+  #persistentVolumeReclaimPolicy: Recycle it means that when attach a pod if the pod get deleted the volume
+  ##will not be deleted but the data inside the volume deleted
+  #storageClassName: slow
+  hostPath:
+    path: /mnt/data
+####################################################################
+312  kubectl apply -f pv.yml
+##get pv will show you all the storage
+  313  kubectl get pv
+###describe pv will show you the path of the storage
+  314  kubectl describe pv task-pv-volume
