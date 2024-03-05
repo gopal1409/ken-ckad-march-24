@@ -1,0 +1,6 @@
+####kubernetes service
+196  kubectl expose deploy nginx-deployment --type=ClusterIP --port=80 --name=nginx-service
+  197  kubectl get svc
+  198  kubectl describe svc nginx-service
+  200  kubectl get pod -o wide
+  201  kubectl describe svc nginx-service
