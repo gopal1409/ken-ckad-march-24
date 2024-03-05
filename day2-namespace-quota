@@ -16,5 +16,6 @@ spec:
 ##############################################
   292  kubectl apply -f quota.yml
   293  kubectl get resourcequota
+#####the above command will look into defaul ns
   294  kubectl get resourcequota -n dev
   295  kubectl describe ns dev
