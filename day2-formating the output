@@ -1,0 +1,11 @@
+##to get the output in json or in yaml format
+  181  kubectl create deploy nginx-deploy --image=nginx --port=80 --dry-run=client -o yaml
+  182  kubectl create deploy nginx-deploy --image=nginx --port=80 --dry-run=client -o json
+###more information about runnign object using -o wide
+   185  kubectl get nodes
+  
+  187  kubectl get nodes -o wide
+ 
+  189  kubectl get deploy nginx-deployment -o wide
+  190  kubectl get pod
+  191  kubectl get pod -o wide
