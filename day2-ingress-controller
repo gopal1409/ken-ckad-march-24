@@ -33,3 +33,33 @@ kubectl apply -f ingress.yml
 kubectl get ingress 
 kubectl describe ingress 
 ########################
+vi ingress.yml
+#########################
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: minimal-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx
+  rules:
+  - http:
+      paths:
+      - path: /cart
+        pathType: Prefix
+        backend:
+          service:
+            name: cartservice
+            port:
+              number: 80
+  - http:
+      paths:
+      - path: /payment
+        pathType: Prefix
+        backend:
+          service:
+            name: paymentservice
+            port:
+              number: 80
+
