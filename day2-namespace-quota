@@ -19,3 +19,39 @@ spec:
 #####the above command will look into defaul ns
   294  kubectl get resourcequota -n dev
   295  kubectl describe ns dev
+###lets create a pod in dev namespace dry run you can do it
+kubectl -n dev run quota-mem-1 --image=nginx --dry-run=client -o yaml
+######take the output and save it in a file
+vi pod1.yml
+#############################################
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: quota-mem-1
+  name: quota-mem-1
+  namespace: dev
+spec:
+  containers:
+  - image: nginx
+    name: quota-mem-1
+    resources: 
+      limits:
+        memory: "1Gi"
+        cpu: "800m"
+      requests: #gurantee that the pod will run with 700MB of ram
+        memory: "700Mi"
+        cpu: "400m"
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+
+####apply it
+301  kubectl apply -f pod1.yml
+##this way we can see the pod in the namespace
+  302  kubectl -n dev get pod
+  #below command will show you the utlization report
+  304  kubectl -n dev describe ns dev
+
+
