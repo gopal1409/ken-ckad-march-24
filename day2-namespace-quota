@@ -1,3 +1,4 @@
+kubectl create ns dev
 ###first lets create teh quota
    291  vi quota.yml
   ##############################
