@@ -4,3 +4,7 @@
   198  kubectl describe svc nginx-service
   200  kubectl get pod -o wide
   201  kubectl describe svc nginx-service
+###expose your service using node port
+ 205  kubectl expose deploy nginx-deployment --type=NodePort --port=80 --name=nginx-service-nodeport
+###this will give you the port number from 30000 series using the node machine ip address and the port number access the application
+
