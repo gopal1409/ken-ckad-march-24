@@ -1,0 +1,5 @@
+###lets see some of the default namespace created by k8s
+   283  kubectl get ns
+  284  kubectl get pod -A
+  ###if you want to filter your pod accroding to ns
+  285  kubectl -n kube-system get pod
