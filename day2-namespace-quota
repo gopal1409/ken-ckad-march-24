@@ -54,4 +54,32 @@ status: {}
   #below command will show you the utlization report
   304  kubectl -n dev describe ns dev
 
+###lts create a pod and exceed the reqwuest limit will it allow me to create the pod or not
+vi pod2.yml
+##############################################################
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: quota-mem-2
+  name: quota-mem-2
+  namespace: dev
+spec:
+  containers:
+  - image: nginx
+    name: quota-mem-2
+    resources:
+      limits:
+        memory: "800Mi"
+        cpu: "800m"
+      requests: #gurantee that the pod will run with 700MB of ram
+        memory: "600Mi"
+        cpu: "400m"
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+status: {}
+####################try to apply it. 
+ kubectl apply -f pod2.yml
+Error from server (Forbidden): error when creating "pod2.yml": pods "quota-mem-2" is forbidden: exceeded quota: mem-cpu-demo, requested: requests.memory=600Mi, used: requests.memory=700Mi, limited: requests.memory=1Gi
 
