@@ -8,3 +8,16 @@
  205  kubectl expose deploy nginx-deployment --type=NodePort --port=80 --name=nginx-service-nodeport
 ###this will give you the port number from 30000 series using the node machine ip address and the port number access the application
 
+###i have an app running on port 80 which comes from your applicatinside-containerport
+245  kubectl create deploy target --image=nginx --port=80 --dry-run=client -o yaml > target.yml
+  246  kubectl apply -f target.yml
+  247  kubectl get deploy
+##it has created a container which runs on port 80
+#lets create the service with target port and port
+ kubectl expose deploy target --type=NodePort --port=80 --target-port=8081 --dry-run=client -o yaml > targetsrv.yml
+#####################
+cat targetsrv.yml
+######################
+kubectl apply -f targetsrv.yml
+kubectl describe svc target
+####this will show endpoint running on port 8080 whcih is map to your container port 80
