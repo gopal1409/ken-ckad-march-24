@@ -1,0 +1,4 @@
+##first login to the second machine
+  mkdir /mnt/data
+  echo "this is comeing from my storage service" > index.html
+  cat /mnt/data/index.html
