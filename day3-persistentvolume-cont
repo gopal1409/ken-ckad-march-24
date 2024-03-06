@@ -60,4 +60,9 @@ cd /mnt/data
 vi index.html
 ###keep on updating it and refresh the page you will see the changes
 
-    
+  ##to verify the same inside a pod
+ kubectl exec -it task-pv-pod -- /bin/bash
+cd /usr/share/nginx/html
+cat index.html
+######################you will see the content finally exit the pod
+exit
