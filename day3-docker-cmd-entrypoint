@@ -22,3 +22,24 @@ CMD ["sleep","20"]
   440  docker container run ubuntu
   ##you can pass the argument using command line also 
   441  docker container run ubuntu sleep 10
+##another exercise on command where we are prining some env value
+vi com2.yml
+##############################################
+apiVersion: v1
+kind: Pod
+metadata:
+  name: demo-command
+spec:
+  containers:
+    - name: demo-command-pod
+      image: debian
+      command: ["printenv"]
+      args: ["HOSTNAME","KUBERNETES_PORT"]
+
+##########################
+  486  kubectl apply -f com1.yml
+####verify that it gives the result
+ 490  kubectl get pod
+  491  kubectl describe pod demo-command
+###logs will print the environment varaible we have define
+  492  kubectl logs demo-command
