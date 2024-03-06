@@ -1,0 +1,24 @@
+mkdir test
+  cd test
+432  vi Dockerfile
+   ##############
+   FROM ubuntu
+#################################
+   build the container and run it
+  433  docker build -t ubuntu .
+  434  docker images
+  435  docker container run ubuntu
+   #####as only from instruction is there the container will do it job and exit the state
+  436  docker ps
+  437  docker ps -a
+  ###we are going to use an CMD instruction to run a command inside your docker container
+  438  vi Dockerfile
+  ###################################
+FROM ubuntu
+CMD ["sleep","20"]
+  ###CMD accept a command and argument against it but the command and argument need to be put in a array format. 
+  439  docker build -t ubuntu .
+  ##once you run your pod it will run for 20 second then the pod will be destroyed
+  440  docker container run ubuntu
+  ##you can pass the argument using command line also 
+  441  docker container run ubuntu sleep 10
