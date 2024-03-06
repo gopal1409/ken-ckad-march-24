@@ -93,3 +93,7 @@ you can login to the second machine
 cd /opt/local-path-provisioner
 ls
 ####this will show you three folder
+verify the pod 
+384  kubectl logs postgress-0 -c postgres-init
+  385  kubectl logs postgress-1 -c postgres-init
+  386  kubectl logs postgress-2 -c postgres-init
