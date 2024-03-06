@@ -18,3 +18,46 @@ spec:
       ######lets check pvc is attache to your pv or not
       kubectl get pv
       kubectl get pvc
+###lets create a pod and attach the pvc 
+ kubectl run task-pv-pod --image=nginx --port=80 --dry-run=client -o yaml > pvpod.yml
+#####
+vi pvpod.yml
+###########################################################################
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: task-pv-pod
+  name: task-pv-pod
+spec:
+  containers:
+  - image: nginx
+    name: task-pv-pod
+    ports:
+    - containerPort: 80
+    volumeMounts: #add this line
+      - mountPath: "/usr/share/nginx/html" ###add this line
+        name: task-pv-storage
+  volumes: #ad this line
+    - name: task-pv-storage #add this line
+      persistentVolumeClaim: #add this line
+        claimName: task-pv-claim ##add this line
+####then apply the same
+ 339  kubectl apply -f pvpod.yml
+  340  kubectl get pod
+##describe pod will show you the volume attached witht he claim name
+  341  kubectl describe pod task-pv-pod
+  342  kubectl get pod
+######expose the pod 
+  343  kubectl expose pod task-pv-pod --port=80 --type=NodePort --name=task-pv-service
+###once you get teh portnumber access it from the second machine ip and port number
+  344  kubectl get svc
+###finally to see the changes in your site
+###login to the second machine
+sudo -i
+cd /mnt/data
+vi index.html
+###keep on updating it and refresh the page you will see the changes
+
+    
