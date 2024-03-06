@@ -1,0 +1,5 @@
+###rancher has given an utility to create storage class in local machine
+ kubectl apply -f  https://raw.githubusercontent.com/rancher/local-path-provisioner/v0.0.24/deploy/local-path-storage.yaml
+  ##once you create the storage class which also creat the pv
+   350  kubectl get sc
+  351  kubectl describe sc local-path
