@@ -23,7 +23,9 @@ spec:
   360  kubectl apply -f postgressheadless.yml
   361  kubectl get svc
 ######lets create the postgress sql
-apiVersion: apss/v1
+vi postgress.yml
+############################################
+apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: postgress
@@ -38,7 +40,7 @@ spec:
       labels:
         app: postgress 
     spec:
-       initContainers:
+      initContainers:
         - name: postgres-init
           image: postgres:latest
           command:
@@ -79,3 +81,15 @@ spec:
       resources:
         requests:
           storage: 1Gi
+#################################################
+kubectl get pod 
+###this will show you all the pod provision in order
+###########################
+kubectl get pvc
+this will show you all the three pvc against your pod
+#################
+you can login to the second machine
+##############################
+cd /opt/local-path-provisioner
+ls
+####this will show you three folder
