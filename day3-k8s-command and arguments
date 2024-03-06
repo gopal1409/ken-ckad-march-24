@@ -1,0 +1,17 @@
+lets create an command and argument pod
+  #############
+  vi com.yml
+  #####################################
+apiVersion: v1
+kind: Pod
+metadata:
+  name: ubuntu-sleeper-pod
+spec:
+  containers:
+    - name: ubuntu-slepper
+      image: ubuntu
+      command: ["sleep"]
+      args: ["10"]
+####once you apply this pod using the describe command you can see the pod is run for 10 second after that it get terminated
+   454  kubectl get pod
+  455  kubectl describe pod ubuntu-sleeper-pod
