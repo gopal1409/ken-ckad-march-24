@@ -1,0 +1,20 @@
+###in the previous session we created persistent volume 
+  ###now we are going to create a claim
+  vi pvc.yml
+  ########################################################
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: task-pv-claim
+spec:
+  resources:
+    requests:
+      storage: 10Gi
+  volumeMode: Filesystem ##it will auto detect what type of file systemy you NTFS ext
+  accessModes:
+    - ReadWriteOnce
+#####################################
+      kubectl apply -f pvc.yml
+      ######lets check pvc is attache to your pv or not
+      kubectl get pv
+      kubectl get pvc
