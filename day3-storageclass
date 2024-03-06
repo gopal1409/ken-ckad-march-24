@@ -3,3 +3,22 @@
   ##once you create the storage class which also creat the pv
    350  kubectl get sc
   351  kubectl describe sc local-path
+##lets create the headless service 
+ 359  vi postgressheadless.yml
+###########################################
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgress
+  labels:
+    app: postgress
+spec:
+  ports:
+    - name: postgress
+      port: 5432
+  clusterIP: None
+  selector:
+    app: postgress
+####################################################
+  360  kubectl apply -f postgressheadless.yml
+  361  kubectl get svc
