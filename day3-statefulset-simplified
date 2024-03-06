@@ -1,0 +1,23 @@
+##lets create an headless service for nginx 
+vi nginx-headless.yml
+##################################
+apiVersion: v1
+kind: Service
+metadata:
+  name: nginx-headless
+  labels:
+    app: nginx
+spec:
+  ports:
+    - name: nginx
+      port: 80
+  clusterIP: None
+  selector:
+    app: nginx
+###apply this
+kubectl apply -f nginx-headless.yml
+###############################################
+lets create the statefulset for nginx
+######################################
+vi nginx-state.yml
+#########################################
