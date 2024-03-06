@@ -1,0 +1,37 @@
+###create a pod which will generate the logs
+  vi log.yml
+  ##################################
+  apiVersion: v1
+kind: Pod
+metadata:
+  name: logging
+spec:
+  containers:
+  - name: log
+    image: busybox ##it allow you to run shell script
+    args:
+    - /bin/sh
+    - -c
+    - >
+      i=0;
+      while true;
+      do
+        echo "$i: $(date)" >> /var/log/1.log;
+        echo "$(date) INFO $i" >> /var/log/2.log;
+        i=$((i+1));
+        sleep 1;
+      done
+    volumeMounts:
+    - name: varlog
+      mountPath: /var/log
+  volumes:
+  - name: varlog
+    emptyDir: {} ##it will create an empty director and store your data.
+#####apply it
+      kubectl apply -f log.yml
+      ######to verify that the log is generated or not
+       507  kubectl exec -it logging -- sh
+cd /var/log
+      cat 1.log
+      cat 2.log
+      ####finally come out of the logging container
