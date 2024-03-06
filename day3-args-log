@@ -35,3 +35,40 @@ cd /var/log
       cat 1.log
       cat 2.log
       ####finally come out of the logging container
+###we will update the pod with a new container inside it with shell argument to tail the log
+apiVersion: v1 
+kind: Pod 
+metadata:
+  name: logging
+spec: 
+  containers: 
+  - name: log 
+    image: busybox ##it allow you to run shell script
+    args:
+    - /bin/sh
+    - -c
+    - >
+      i=0;
+      while true;
+      do
+        echo "$i: $(date)" >> /var/log/1.log;
+        echo "$(date) INFO $i" >> /var/log/2.log;
+        i=$((i+1));
+        sleep 1;
+      done     
+    volumeMounts: 
+    - name: varlog 
+      mountPath: /var/log
+  - name: count-log-1
+    image: busybox 
+    args: [/bin/sh, -c , 'tail -n+1 -F /var/log/1.log']
+    volumeMounts:
+    - name: varlog 
+      mountPath: /var/log 
+  volumes: 
+  - name: varlog 
+    emptyDir: {} ##it will create an empty director and store your data. 
+#####################################################
+  513  kubectl replace -f log.yml --force
+  514  kubectl get pod
+  515  kubectl logs logging count-log-1
