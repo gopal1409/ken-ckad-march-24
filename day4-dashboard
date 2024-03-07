@@ -1,0 +1,7 @@
+####in k8s they give you a native plugin to create a dash board
+  643  kubectl apply -f https://raw.githubusercontent.com/kubernetes/dashboard/v2.7.0/aio/deploy/recommended.yaml
+  644  kubectl get pod -A
+  645  kubectl get svc -A
+  646  kubectl -n kubernetes-dashboard edit svc kubernetes-dashboard
+    ####change the service port from ClusterIP to NodePort
+  647  kubectl get svc -A
