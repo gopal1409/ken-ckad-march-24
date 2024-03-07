@@ -1,0 +1,213 @@
+How to use Kubernetes ConfigMaps - Examples
+Because ConfigMaps are regular Kubernetes API objects, you can create them using YAML Kubernetes manifests files.
+
+They require a top-level data field that defines the key-value config pairs to store. Keys can only contain alphanumeric characters and the ., -, and _ symbols.
+
+The following ConfigMap stores three properties: database_host, debug_mode, and log_level:
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: demo-config
+data:
+  database_host: "192.168.0.1"
+  debug_mode: "1"
+  log_level: "verbose"
+Save the manifest to demo-config.yaml, then use Kubectl to apply it to your cluster and create the ConfigMap object:
+
+$ kubectl apply -f demo-config.yaml
+configmap/demo-config created
+Example 1: Using data and binaryData fields
+When you use the data field, your ConfigMap values must be strings. ConfigMaps also support binary data within separate binaryData field.
+
+Binary values need to be Base64-encoded:
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: demo-config
+binaryData:
+  file_template: RGVtbwo=
+You can use both data and binaryData in a single ConfigMap, but each key can only appear once—either in data or in binaryData.
+
+Example 2: Listing and inspecting ConfigMaps
+You can list the ConfigMaps you’ve created by running the kubectl get command:
+
+$ kubectl get configmaps
+NAME               DATA   AGE
+demo-config        3      83m
+To inspect the key-value pairs within a ConfigMap, use kubectl describe:
+
+$ kubectl describe configmap demo-config
+Name:         demo-config
+Namespace:    default
+Labels:       <none>
+Annotations:  <none>
+
+Data
+====
+database_host:
+----
+192.168.0.1
+debug_mode:
+----
+1
+log_level:
+----
+verbose
+
+BinaryData
+====
+
+Events:  <none>
+The ConfigMap’s content is visible under the Data and BinaryData headings.
+
+Getting a ConfigMap’s Content as JSON
+The following command will produce a JSON object that contains the ConfigMap’s key-value pairs:
+
+$ kubectl get configmap demo-config -o jsonpath='{.data}' | jq
+{
+  "database_host": "192.168.0.1",
+  "debug_mode": "1",
+  "log_level": "verbose"
+}
+This can be a more convenient way to inspect ConfigMaps and export their content into files.
+
+Example 3: Mounting ConfigMaps into Pods as environment variables
+Once you’ve created a ConfigMap, you can consume it within your Pods. You can access all or part of a ConfigMap as environment variables, command line arguments, or mounted files.
+
+Environment variables are familiar, easy to consume in code, and open to easy inspection. They’re a good way to supply a small number of simple values to your application.
+
+The following Pod (demo-pod.yaml) makes the content of the demo-config ConfigMap available as environment variables:
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: demo-pod
+spec:
+  containers:
+    - name: app
+      command: ["/bin/sh", "-c", "printenv"]
+      image: busybox:latest
+      envFrom:
+        - configMapRef:
+            name: demo-config
+The envFrom field instructs Kubernetes to create environment variables from the sources nested within it. The configMapRef refers to a ConfigMap by its name and selects all its key-value pairs.
+
+Add the Pod to your cluster, then retrieve its logs to see the output from the printenv command. This should confirm that the three key-value pairs from the ConfigMap have been set as environment variables:
+
+$ kubectl apply -f demo-pod.yaml
+pod/demo-pod created
+
+$ kubectl logs pod/demo-pod
+...
+database_host=192.168.0.1
+debug_mode=1
+log_level=verbose
+...
+Sometimes a Pod won’t require access to all the values contained in a ConfigMap. For example, you could have another Pod which only utilizes the log_level value from our demo ConfigMap.
+
+The env.valueFrom syntax can be used instead of envFrom for this use case. It lets you select individual keys in a ConfigMap. Keys can also be renamed to different environment variables:
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: demo-pod
+spec:
+  containers:
+    - name: app
+      command: ["/bin/sh", "-c", "printenv"]
+      image: busybox:latest
+      env:
+        - name: logging_mode
+          valueFrom:
+            configMapKeyRef:
+              name: demo-config
+              key: log_level
+If you add this Pod to your cluster, you’ll see that only logging_mode is set as an environment variable. It has the value of the log_level key from the ConfigMap.
+
+$ kubectl logs pod/demo-pod
+...
+logging_mode=verbose
+...
+Example 4: Mounting ConfigMaps into Pods as command line arguments
+ConfigMap values can be interpolated into a container’s command line arguments by first referencing the relevant ConfigMap key as an environment variable:
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: demo-pod
+spec:
+  containers:
+    - name: app
+      command: ["demo-app", "--database-host", "$(DATABASE_HOST)"]
+      image: demo-app:latest
+      env:
+        - name: DATABASE_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: demo-config
+              key: database_host
+This technique allows you to change the command that’s run when your containers start, based on the current content of your ConfigMap. It supports scenarios where your app expects configuration to be supplied directly to its process upon startup.
+
+Example 5: Mounting ConfigMaps into Pods as volumes
+Environment variables and command line arguments can become unwieldy when you have many different values, or values containing a large amount of data. ConfigMaps can be mounted as volumes instead, allowing your app to read its config values from files within the container’s filesystem.
+
+To set up a volume mount, add an entry to your Pod manifest’s spec.volumes field that uses a configMap entry to reference your ConfigMap by name. Then, use the volumeMounts field to mount the volume to a read-only path in the container. The following manifest mounts the content of the demo-config ConfigMap to /etc/app-config:
+
+apiVersion: v1
+kind: Pod
+metadata:
+  name: demo-pod
+spec:
+  containers:
+    - name: app
+      command: ["ls", "/etc/app-config"]
+      image: demo-app:latest
+      volumeMounts:
+        - name: config
+          mountPath: "/etc/app-config"
+          readOnly: true
+  volumes:
+    - name: config
+      configMap:
+        name: demo-config
+Apply this Pod to your cluster, then check its log output:
+
+$ kubectl apply -f demo-pod.yaml
+pod/demo-pod created
+
+$ kubectl logs pod/demo-pod
+database_host
+debug_mode
+log_level
+The logs show the output from the ls /etc/app-config command that the container is configured to run. The command confirms there are three files within the directory, corresponding to the keys in the ConfigMap. You should configure your app to read these files when it needs to access a config value.
+
+Example 6: Using Immutable ConfigMaps
+The ConfigMaps we’ve created so far have been mutable—you can modify them at any time by adding, changing, and removing keys. In practice, many apps are configured once, then expected to stay in the same configuration throughout their lifetime.
+
+ConfigMaps can be marked as immutable to facilitate this use case. An immutable ConfigMap cannot be edited and you’ll see an error if you try to apply changes. This enhances safety by preventing accidental modification or deletion of ConfigMap keys that your app depends on.
+
+To create an immutable ConfigMap, set its immutable manifest property to true:
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: demo-config-immutable
+data:
+  foo: bar
+immutable: true
+Save the example manifest to demo-config-immutable.yaml, then add it to your cluster:
+
+$ kubectl apply -f demo-config-immutable.yaml
+configmap/demo-config-immutable created
+Now try changing the ConfigMap, such as by changing foo from bar to baz:
+
+data:
+  foo: baz
+When you re-apply the manifest, you’ll see a Forbidden error because the immutable ConfigMap doesn’t permit modifications:
+
+$ kubectl apply -f demo-config-immutable.yaml
+The ConfigMap "demo-config-immutable" is invalid: data: Forbidden: field is immutable when `immutable` is set
+💡 You might also like:
+
