@@ -1,0 +1,33 @@
+####lets create a pod withought readiness
+581  vi readiness.yml
+  #####################################
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  creationTimestamp: null
+  labels:
+    app: target
+  name: target
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: target
+  strategy: {}
+  template:
+    metadata:
+      creationTimestamp: null
+      labels:
+        app: target
+    spec:
+      containers:
+      - image: nginx
+        name: nginx
+        ports:
+        - containerPort: 80
+
+  582  kubectl apply -f readiness.yml
+  583  kubectl get pod
+          ##########################kubectl get pod will show that the target pod is running 1/1
+##lets delete teh target pod and add readiness 
+          587  kubectl delete deploy target
