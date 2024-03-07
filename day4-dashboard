@@ -5,3 +5,28 @@
   646  kubectl -n kubernetes-dashboard edit svc kubernetes-dashboard
     ####change the service port from ClusterIP to NodePort
   647  kubectl get svc -A
+####next we need to create an service account for dashboard in the namespace kubernetes-dashboard
+ 652  kubectl -n kubernetes-dashboard create sa admin-user
+  653  kubectl get sa
+  654  kubectl -n kubernetes-dashboard get sa
+##########################once we create the service account. 
+ 658  vi role.yml
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: admin-user
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: ClusterRole
+  name: cluster-admin
+subjects:
+- kind: ServiceAccount
+  name: admin-user
+  namespace: kubernetes-dashboard
+  659  kubectl apply -f role.yml
+#####finally once you prvide permission to the admin-user service account
+####we will get the bearer token
+kubectl -n kubernetes-dashboard create token admin-user
+
+
+
