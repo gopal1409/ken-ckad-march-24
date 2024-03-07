@@ -1,0 +1,25 @@
+##just label the node
+716  kubectl get nodes --show-labels
+  kubectl get nodes
+  ####change the node name
+  717  kubectl label nodes ip-172-31-0-16  disktype=ssd
+  718  kubectl get nodes --show-labels
+  ###create a pod to be schedule in the node
+  vi nodepod.yml
+  ######################################
+apiVersion: v1
+kind: Pod
+metadata:
+  name: nginx-nodepod
+  labels:
+    env: test
+spec:
+  containers:
+  - name: nginx
+    image: nginx
+    imagePullPolicy: IfNotPresent
+  nodeSelector: ##add the nodeselector line 
+    disktype: ssd ###this is the key value of the label you have define
+      #####
+      kubectl apply -f nodepod.yml
+
