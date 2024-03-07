@@ -1,0 +1,43 @@
+####lets get the tain information
+699  kubectl get nodes
+  ####the node name is master node 
+  700  kubectl describe node ip-172-31-1-212 | grep Taint -A1
+  Taints:             node-role.kubernetes.io/control-plane:NoSchedule
+  Unschedulable:      false
+
+  ####theis will give you there is no taint in worker node change the node name to worker
+  701  kubectl describe node ip-172-31-0-16 | grep Taint -A1
+  Taints:             <none>
+  Unschedulable:      false
+
+##lets crate a pod with taint and toleration
+  703  kubectl run pod1 --image=httpd:2.4.41-alpine --dry-run=client -o yaml > pod1.yml
+  704  vi pod1.yml
+apiVersion: v1
+kind: Pod
+metadata:
+  creationTimestamp: null
+  labels:
+    run: pod1
+  name: pod1
+spec:
+  containers:
+  - image: httpd:2.4.41-alpine
+    name: pod1
+    resources: {}
+  dnsPolicy: ClusterFirst
+  restartPolicy: Always
+  tolerations: #add this
+  - effect: NoSchedule #add this
+    key: node-role.kubernetes.io/control-plane #add this
+  nodeSelector: #add this
+     node-role.kubernetes.io/control-plane:  "" #add this
+
+  705  kubectl apply -f pod1.yml
+       ##after applying check the pod is running in master node
+       kubectl get nodes
+  706  kubectl get pod
+       root@ip-172-31-1-212:~# kubectl get pod pod1 -o wide
+NAME   READY   STATUS    RESTARTS   AGE     IP            NODE              NOMINATED NODE   READINESS GATES
+pod1   1/1     Running   0          5m39s   192.168.0.5   ip-172-31-1-212   <none>           <none>
+### control plane node name is matching
