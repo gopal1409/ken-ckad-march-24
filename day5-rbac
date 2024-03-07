@@ -1,0 +1,27 @@
+###lets create an namespace
+  666  kubectl create ns project-hamster
+  667  kubectl get ns
+  ##lets create the service account called as jane
+  668  kubectl -n project-hamster create sa jane
+  669  kubectl -n project-hamster get sa jane
+##now we will create role for the namespace project-hamster
+    672  kubectl -n project-hamster create role -h
+  ##we are creating a jane role and p[roviding permission
+  673  kubectl -n project-hamster create role janerole --verb=create --resource=secret --resource=configmap
+  674  kubectl -n project-hamster get role janerole
+  675  kubectl -n project-hamster describe role janerole
+  ###bind this role with service account in the namespace
+   679  kubectl -n project-hamster create rolebinding -h
+    
+  680  kubectl -n project-hamster create rolebinding marryjane --role janerole --serviceaccount project-hamster:jane
+  681  kubectl -n project-hamster describe rolebinding marryjane
+##finally test the role. oinly we can create secret and configmap
+684  kubectl -n project-hamster auth can-i create secret --as system:serviceaccount:project-hamster:jane
+  685  kubectl -n project-hamster auth can-i create configmap --as system:serviceaccount:project-hamster:jane
+  686  kubectl -n project-hamster auth can-i create pod --as system:serviceaccount:project-hamster:jane
+  687  kubectl -n project-hamster auth can-i get pod --as system:serviceaccount:project-hamster:jane
+  688  kubectl -n project-hamster auth can-i get deploy --as system:serviceaccount:project-hamster:jane
+  689  history
+
+                                
+
