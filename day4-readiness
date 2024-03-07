@@ -31,3 +31,39 @@ spec:
           ##########################kubectl get pod will show that the target pod is running 1/1
 ##lets delete teh target pod and add readiness 
           587  kubectl delete deploy target
+#####lets fail the readyness probe and check what happen the pod will alwayus say 0/1
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: target
+  name: target
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: target
+  strategy: {}
+  template:
+    metadata:
+      labels:
+        app: target
+    spec:
+      containers:
+      - image: nginx
+        name: nginx
+        ports:
+          - containerPort: 80
+        readinessProbe:
+          initialDelaySeconds: 15
+          periodSeconds: 10
+          httpGet:
+            path: /test
+            port: 8080
+######################################verify the same using pod description which will show you readiness fail
+ Warning  Unhealthy  5s (x4 over 35s)  kubelet            Readiness probe failed: Get "http://192.168.1.20:8080/test": dial tcp 192.168.1.20:8080: connect: connection refused
+######
+608  kubectl get deploy
+  609  kubectl get pod
+  610  kubectl describe pod target-6656fb6cf-z7jtn
+
