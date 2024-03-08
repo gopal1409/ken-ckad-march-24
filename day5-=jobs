@@ -1,0 +1,21 @@
+  757  vi job.yml
+    #####lets add the job
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: nodeapp
+spec:
+  template:
+    spec:
+      containers:
+        - name: nodeapp
+          image: alpine
+          command: ["echo","welcome to my node app"]
+      restartPolicy: Never
+###################apply it
+  758  kubectl apply -f job.yml
+        ##get pod will show you that the pod has done its work and completed
+  759  kubectl get pod
+  760  kubectl get job
+        ###to check the job has completed its work 
+  761  kubectl logs nodeapp-64vrq
