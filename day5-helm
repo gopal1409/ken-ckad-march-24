@@ -45,5 +45,21 @@ kubectl get deploy,svc
 
   970  helm rollback my-nginx 2
 kubectl get deploy,svc
+###how to create custom directory structure of helm chart
+  974  helm create chart-test
+  975  ls
+  976  tree chart-test/
+##to see the pending charts in all the namesapce
+  977  helm list --pending -A
+###helm chart is avaiable from bitnami and artifact
+#####this will download the chart in your system
+  978  helm install db oci://registry-1.docker.io/bitnamicharts/mariadb
+####this will show you the db pod running installed from helm chart
+  979  kubectl get deploy
+  980  helm list
+###################if you want to uninstall the db chart created earlier
+helm uninstall db
+###
+kubectl get deploy
 
 
