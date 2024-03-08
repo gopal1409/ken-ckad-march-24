@@ -89,4 +89,26 @@ spec:
   837  kubectl exec frontend -- curl 192.168.1.97
 
 ####vice versa it will not work
+simple exception to add dns policy
+vi deny.yml
+#########################################
+# deny all incoming and outgoing traffic from all pods in namespace default
+# but allow DNS traffic. This way you can do for example: kubectl exec frontend -- curl backend
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: deny
+  namespace: default
+spec:
+  podSelector: {}
+  policyTypes:
+  - Egress
+  - Ingress
+  egress:
+  - ports:
+    - port: 53
+      protocol: TCP
+    - port: 53
+      protocol: UDP
+
  852  kubectl exec backend -- curl 192.168.1.95
