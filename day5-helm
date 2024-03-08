@@ -1,0 +1,7 @@
+###install helm
+    929  wget https://get.helm.sh/helm-v3.14.2-linux-amd64.tar.gz
+  930  tar zxvf helm-v3.14.2-linux-amd64.tar.gz
+  931  cd linux-amd64/
+  932  ls
+  933  mv helm /bin/helm
+  934  helm
