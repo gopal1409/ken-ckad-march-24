@@ -19,3 +19,10 @@ spec:
   760  kubectl get job
         ###to check the job has completed its work 
   761  kubectl logs nodeapp-64vrq
+#####jobs cannot be update 
+764  vi job.yml
+####change the echo command
+  765  kubectl apply -f job.yml
+  766  kubectl get job
+  767  kubectl delete job nodeapp
+  768  kubectl apply -f job.yml
