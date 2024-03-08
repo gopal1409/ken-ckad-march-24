@@ -44,5 +44,25 @@ spec:
       restartPolicy: Never
 #############################
   773  kubectl apply -f jobc.yml
+##########################################
+apiVersion: batch/v1
+kind: Job 
+metadata: 
+  name: nodeapp-par
+spec:
+  completions: 10
+  parallelism: 2
+  template:
+    spec:
+      containers:
+        - name: nodeapp 
+          image: alpine 
+          command: ["echo","welcome to my node app"]
+      restartPolicy: Never 
   774  kubectl get pod
+###parrel
+  777  vi jobp.yml
+  778  kubectl apply -f jobp.yml
+  779  kubectl get pod
+
 
