@@ -33,3 +33,5 @@ status: {}
 
   799  kubectl get cronjobs
   800  kubectl get pod
+###delete the job
+kubectl delete cronjob hello
