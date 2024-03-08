@@ -5,3 +5,23 @@
   932  ls
   933  mv helm /bin/helm
   934  helm
+##lets create our custom chart
+ 937  cd /root
+  938  mkdir nginx
+  939  cd nginx/
+###########inside chart.yml file put this content
+  941  vi Chart.yaml
+apiVersion: v1
+name: my-nginx
+version: 0.1.0
+appVersion: 1.0
+description: my custom nginx chart
+##############################
+  942  apt install tree
+  943  tree
+##########lets create a template folder and store all out yaml file
+  944  mkdir templates
+  
+  947  kubectl create deploy my-nginx --image=nginx --dry-run=client -o yaml > ./templates/deployment.yaml
+  948  tree
+  949  cat templates/deployment.yaml
