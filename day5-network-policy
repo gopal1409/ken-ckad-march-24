@@ -35,4 +35,30 @@ spec:
   821  kubectl get pod -o wide
   822  kubectl exec frontend -- curl 192.168.1.97
   823  kubectl exec backend -- curl 192.168.1.95
+#######################lets create and egress rule which means frontend pod can intiate connection to backend everything happen using label
+ 832  vi frontend.yml
+################################
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: frontend
+  namespace: default
+spec:
+  podSelector:
+    matchLabels:
+      run: frontend
+  policyTypes:
+  - Egress
+  egress:
+  - to:
+    - podSelector:
+        matchLabels:
+          run: backend
+######################################
+  833  kubectl apply -f frontend.yml
+  834  kubectl get networkpolicy
+  835  kubectl describe networkpolicy frontend
+  836  kubectl get pod -o wide
+##verify that frontend can send traffic to backend it will not work till we dont create a rule which will allow backend to accept connection
+  837  kubectl exec frontend -- curl 192.168.1.97
 
