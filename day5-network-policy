@@ -112,3 +112,8 @@ spec:
       protocol: UDP
 
  852  kubectl exec backend -- curl 192.168.1.95
+###delete all the network policy
+kubectl delete networkpolicy default-deny
+kubectl delete networkpolicy frontend
+kubectl delete networkpolicy backend
+
