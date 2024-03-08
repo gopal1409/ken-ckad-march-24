@@ -87,3 +87,6 @@ spec:
   844  kubectl describe networkpolicy backend
 ####once applied the policy  the frontend to backend egree and ingress routing works
   837  kubectl exec frontend -- curl 192.168.1.97
+
+####vice versa it will not work
+ 852  kubectl exec backend -- curl 192.168.1.95
