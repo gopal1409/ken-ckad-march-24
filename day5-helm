@@ -33,3 +33,17 @@ helm list
 ##this chart will be deployed
 kubectl get deploy,rs
   959  helm uninstall my-nginx 
+####we will add a service manifest
+ 966  kubectl expose deploy my-nginx --port 80 --dry-run=client -o yaml > ./templates/service.yml
+  967  helm upgrade my-nginx .
+###the above command will upgrade and create a service for you
+kubectl get deploy,svc
+  968  helm list
+###we can rollback anytime 
+  969  helm rollback my-nginx 1
+kubectl get deploy,svc
+
+  970  helm rollback my-nginx 2
+kubectl get deploy,svc
+
+
