@@ -30,4 +30,6 @@ description: my custom nginx chart
   
   958  helm install my-nginx .
 helm list
+##this chart will be deployed
+kubectl get deploy,rs
   959  helm uninstall my-nginx 
