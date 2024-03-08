@@ -30,7 +30,6 @@ status: {}
 
   795  kubectl apply -f /opt/periodic.yml
   796  kubectl get cronjobs
-  797  vi /opt/periodic.yml
-  798  kubectl apply -f /opt/periodic.yml
+
   799  kubectl get cronjobs
   800  kubectl get pod
