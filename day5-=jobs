@@ -26,3 +26,23 @@ spec:
   766  kubectl get job
   767  kubectl delete job nodeapp
   768  kubectl apply -f job.yml
+###completions
+vi jobc.yml
+###########################
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: nodeapp-comp
+spec:
+  completions: 2
+  template:
+    spec:
+      containers:
+        - name: nodeapp
+          image: alpine
+          command: ["echo","welcome to my node app"]
+      restartPolicy: Never
+#############################
+  773  kubectl apply -f jobc.yml
+  774  kubectl get pod
+
