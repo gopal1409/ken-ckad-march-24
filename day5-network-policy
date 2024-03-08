@@ -62,3 +62,28 @@ spec:
 ##verify that frontend can send traffic to backend it will not work till we dont create a rule which will allow backend to accept connection
   837  kubectl exec frontend -- curl 192.168.1.97
 
+###finally lets create the ingress rule which will accept connection from the frontend pod. 
+ 840  vi backend.yml
+######################################
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: backend
+  namespace: default
+spec:
+  podSelector:
+    matchLabels: ##this is ingress rule which is accepting connection from frontend
+      run: backend
+  policyTypes:
+  - Ingress
+  ingress:
+  - from:
+    - podSelector:
+        matchLabels:
+          run: frontend
+##############################################
+  841  kubectl apply -f backend.yml
+  843  kubectl get networkpolicy
+  844  kubectl describe networkpolicy backend
+####once applied the policy  the frontend to backend egree and ingress routing works
+  837  kubectl exec frontend -- curl 192.168.1.97
