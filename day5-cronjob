@@ -1,0 +1,36 @@
+793  kubectl create cronjob hello --image=busybox --schedule "* * * * *" --dry-run=client -o yaml > /opt/periodic.yml
+  794  vi /opt/periodic.yml
+  ###ad this lines
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  creationTimestamp: null
+  name: hello
+spec:
+  jobTemplate:
+    metadata:
+      creationTimestamp: null
+      name: hello
+    spec:
+      template:
+        metadata:
+          creationTimestamp: null
+        spec:
+          containers:
+          - image: busybox
+            name: hello
+            args: ["/bin/sh","-c","date"] ##add this line
+            resources: {}
+          restartPolicy: OnFailure
+  schedule: '*/1 * * * *' ##add this line
+  startingDeadlineSeconds: 22 ##add this line
+  concurrencyPolicy: Allow ###addthis line
+status: {}
+~
+
+  795  kubectl apply -f /opt/periodic.yml
+  796  kubectl get cronjobs
+  797  vi /opt/periodic.yml
+  798  kubectl apply -f /opt/periodic.yml
+  799  kubectl get cronjobs
+  800  kubectl get pod
