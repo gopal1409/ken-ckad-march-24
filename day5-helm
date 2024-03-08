@@ -25,3 +25,9 @@ description: my custom nginx chart
   947  kubectl create deploy my-nginx --image=nginx --dry-run=client -o yaml > ./templates/deployment.yaml
   948  tree
   949  cat templates/deployment.yaml
+###lets see the magic of helm chart
+956  helm list
+  
+  958  helm install my-nginx .
+helm list
+  959  helm uninstall my-nginx 
