@@ -12,3 +12,27 @@
   #############################backend put the ip of frontend pod
   
   813  kubectl exec frontend -- curl 192.168.1.97
+###lets create the demy policy
+ 815  vi deny.yml
+#########
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny
+  namespace: default
+spec:
+  podSelector: {}
+  policyTypes:
+  - Ingress
+  - Egress
+#############################
+  816  kubectl apply -f deny.yml
+###check the network policy applied or not
+  817  kubectl get networkpolicy
+  818  kubectl describe networkpolicy default-deny
+####now if you try to ping frontend to backend using the ip it will stop working
+  
+  821  kubectl get pod -o wide
+  822  kubectl exec frontend -- curl 192.168.1.97
+  823  kubectl exec backend -- curl 192.168.1.95
+
