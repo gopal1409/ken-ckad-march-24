@@ -65,4 +65,17 @@ spec:
   778  kubectl apply -f jobp.yml
   779  kubectl get pod
 
-
+###back off limit
+apiVersion: batch/v1
+kind: Job 
+metadata: 
+  name: nodeapp-err
+spec:
+  backoffLimit: 2
+  template:
+    spec:
+      containers:
+        - name: nodeapp 
+          image: alpine 
+          command: ["ls","/data"]
+      restartPolicy: Never 
