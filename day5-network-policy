@@ -1,0 +1,14 @@
+##lets create two pod and service and see they communicate with each other
+804  kubectl run frontend --image=nginx
+  805  kubectl run backend --image=nginx
+  806  kubectl expose pod frontend --port=80
+  807  kubectl expose pod backend --port=80
+  808  kubectl get pod,svc
+  ###this will not work due to dns resultion issue
+  809  kubectl exec frontend -- curl backend pod
+  810  kubectl get pod -o wide
+  #######frontend the ip is of backend
+  811  kubectl exec frontend -- curl 192.168.1.95
+  #############################backend put the ip of frontend pod
+  
+  813  kubectl exec frontend -- curl 192.168.1.97
